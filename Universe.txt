@@ -1,0 +1,159 @@
+psql --username=freecodecamp –dbname=postgres
+
+CREATE DATABASE universe;
+
+\c universe
+
+CREATE table star(
+	star_id serial primary key,
+	name varchar(30) not null UNIQUE,
+	brightness_star numeric(4,2)not null,
+	bavaria_designation varchar(30),
+	designation varchar(30),
+	approval_date date);
+
+
+INSERT INTO star(name, brightness_star, bavaria_designation, designation, approval_date) VALUES
+('Acamar',1076,'θ1 Eridani A','HR 897','2016-07-20'),
+('Achernar',1076,'α Eridani A','HR 472','2016-06-30'),
+('Achird',0.07,'η Cassiopeiae A','HR 219','2017-09-05'),
+('Acrab',1076,'1 Scorpio Aa','HR 4730','2016-07-20'),
+('Acrux',0.77,'α Cross Aa','HR 897','2016-07-20'),
+('Acubens',300,'α Cancer Aa','HR 3572','2016-07-20'),
+('Adhafera',207,'ζ Leonis Aa','HR 4031','2016-07-20'),
+('Adhara',22300,'ε Canis Majoris A','HR 2618','2016-08-21'),
+('Adhil',9999,'ξ of Andromeda','HR 390','2016-08-21'),
+('Ain',73,'ε Tauri Aa1','HR 1409','2015-12-15'),
+('Ainalrami',1076,'ν1 Sagittarius A','HR 7116','2017-09-05'),
+('Albireo',9999,'β1 Cygni Aa','HR 7417','2016-07-20'),
+('Albaldah',1000,'π Sagittarius A','HR 7264','2017-09-05');
+
+
+CREATE TABLE constellation(
+	constellation_id serial primary key,
+	name varchar(30) not null UNIQUE,
+	year_discovered int,
+	meaning varchar(50) not nulll);
+
+
+alter table constellation add COLUMN id_star int not null REFERENCES star_id(star);
+
+INSERT into constellation(name,year_discovered,meaning,id_star) value
+('Eridanuss',Null,'La palabra Eridanus o Erídano es el nombre de una constelación austral, la más larga del cielo, aunque no la más extensa.',1),
+('Eridanus',Null,'La palabra Eridanus o Erídano es el nombre de una constelación austral, la más larga del cielo, aunque no la más extensa.',2),
+('Cassiopeia',Null,'En la mitología griega, Casiopea o Casiepea era una reina que pertenece a la estirpe de los Agenóridas.',3),
+('Scorpius',Null,'El origen de la constelación se encuentra en la leyenda de Orión.',4),
+('Crux',1589,'Se denomina así porque su ubicación está próxima al Polo Sur y porque se opone a otra constelación similar, la Cruz del Norte.',5),
+('Cancer',Null,'La constelación del cangrejo y la constelación de la Hidra están relacionadas con uno de los doce trabajos del Heracles.',6),
+('Leo',Null,'Los mitógrafos griegos de la Antigüedad indicaban que, con la constelación de Leo, el dios Zeus había querido honrar al rey de los animales.',7),
+('Canis Maior',Null,'Mayor (Canis Maior) es una constelación que parece seguir, en su recorrido en el cielo debido al movimiento diurno, al «Gran Cazador», Orión.',8),
+('Andromeda',Null,'El término "andrómeda" o "andromeda" significa mujer que puede con todo.',9),
+('Taurus',Null,'Signo del zodíaco correspondiente a esta constelación.',10),
+('Sagittarius',Null,'La palabra "sagitario" viene del latín "sagitta" (flecha, saeta) y "sagittarius".',11),
+('Cygnus',Null,'Cygnus (el cisne) es una constelación del hemisferio norte que atraviesa la Vía Láctea.',12),
+('Sagitatio',Null,'La palabra "sagitario" viene del latín "sagitta" (flecha, saeta) y "sagittarius".',13);
+
+
+CREATE TABLE galaxy(
+	galaxy_id SERIAL PRIMARY KEY,
+	name varchar(30)not null,
+	designations varchar(40) UNIQUE,
+	name_meaning varchar(100),
+id_constellation,
+ is_visible_to_the_eye boolean not null,);
+
+alter table galaxy add COLUMN id_constellation int not null REFERENCES constellation_id(constellation);
+
+insert into galaxy(name,designations,name_meaning,id_constellation,is_visible_to_the_eye) values
+('Espiral Intermedia','SAB','Se denomina galaxia espiral intermedia a una galaxia que, de acuerdo a su forma, se clasifica entre una galaxia espiral barrada y una galaxia espiral sin barra.',1,False),
+('Intermedia Espeiral','SABB','Se denomina galaxia espiral intermedia a una galaxia que, de acuerdo a su forma, se clasifica entre una galaxia espiral barrada y una galaxia espiral sin barra.',2,False),
+('Andromeda','M 31','El término "andrómeda" o "andromeda" significa mujer que puede con todo. Andrómeda, constelación boreal situada al sur de Casiopea. Galaxia de Andrómeda (M31), galaxia espiral gigante.',3,True),
+('Andromeda','NGC 224','El término "andrómeda" o "andromeda" significa mujer que puede con todo. Andrómeda, constelación boreal situada al sur de Casiopea. Galaxia de Andrómeda (M31), galaxia espiral gigante.',4,True),
+('Milky Way','SB','Vast nebulosity, in the form of a discontinuous band, which is made up of millions of stars and goes completely around the celestial sphere.',5,True),
+('Andromeda','UGC 454','El término "andrómeda" o "andromeda" significa mujer que puede con todo. Andrómeda, constelación boreal situada al sur de Casiopea. Galaxia de Andrómeda (M31), galaxia espiral gigante.',5,True),
+('Andromeda','PGC 2557','El término "andrómeda" o "andromeda" significa mujer que puede con todo. Andrómeda, constelación boreal situada al sur de Casiopea. Galaxia de Andrómeda (M31), galaxia espiral gigante.',6,True),
+('Galaxia enana del Can Mayor','NGC 1851','La Enana del Can Mayor, como su nombre lo dice, es una galaxia Enana ubicada en el Grupo Local (El de la Vía Láctea) y a la vez en la constelación Canis Maior. Tiene forma elíptica y también tiene aproximadamente mil millones de estrellas, de las cuales la mayoría son gigantes rojas.',7,False),
+('Andromeda','2C 56 (Core)','El término "andrómeda" o "andromeda" significa mujer que puede con todo. Andrómeda, constelación boreal situada al sur de Casiopea. Galaxia de Andrómeda (M31), galaxia espiral gigante.',8,True),
+('Andromeda','CGCG 535-17','El término "andrómeda" o "andromeda" significa mujer que puede con todo. Andrómeda, constelación boreal situada al sur de Casiopea. Galaxia de Andrómeda (M31), galaxia espiral gigante.',9,True),
+('Andromeda','MCG +07-02-016','El término "andrómeda" o "andromeda" significa mujer que puede con todo. Andrómeda, constelación boreal situada al sur de Casiopea. Galaxia de Andrómeda (M31), galaxia espiral gigante.',10,True),
+('Milky Way','SBB','Vast nebulosity, in the form of a discontinuous band, which is made up of millions of stars and goes completely around the celestial sphere.',11,True),
+('Andromeda','IRAS 00400+4059','El término "andrómeda" o "andromeda" significa mujer que puede con todo. Andrómeda, constelación boreal situada al sur de Casiopea. Galaxia de Andrómeda (M31), galaxia espiral gigante.',12,True);
+
+
+ALTER TABLE star ADD COLUMN galaxy_id INT REFERENCES galaxy(galaxy_id); 
+
+UPDATE star SET galaxy_id = 14 where star_id = 1;
+UPDATE star SET galaxy_id = 15 where star_id = 2;
+UPDATE star SET galaxy_id = 16 where star_id = 3;
+UPDATE star SET galaxy_id = 17 where star_id = 4;
+UPDATE star SET galaxy_id = 18 where star_id = 5;
+UPDATE star SET galaxy_id = 19 where star_id = 6;
+UPDATE star SET galaxy_id = 20 where star_id = 7;
+UPDATE star SET galaxy_id = 21 where star_id = 8;
+UPDATE star SET galaxy_id = 22 where star_id = 9;
+UPDATE star SET galaxy_id = 23 where star_id = 10;
+UPDATE star SET galaxy_id = 24 where star_id = 11;
+UPDATE star SET galaxy_id = 25 where star_id = 12;
+UPDATE star SET galaxy_id = 26 where star_id = 13;
+
+
+CREATE TABLE planet(
+	planet_id SERIAL PRIMARY KEY,
+	name VARCHAR(30) NOT NULL UNIQUE, 
+	orbital_period_in_years NUMERIC(7, 2) NOT NULL, 
+	rotation_period_in_days NUMERIC(5, 2), 
+	has_moon BOOLEAN NOT NULL); 
+
+ALTER TABLE planet add column id_star int not null references star(star_id);
+
+
+INSERT INTO
+	planet(name, orbital_period_in_years, rotation_period_in_days, has_moon, star_id)
+VALUES
+	('Mercury', 0.24, 58.65, False, 13), 
+	('Venus', 0.62, 243.02, False, 7), 
+	('Earth', 1.00, 1.00, True, 5), 
+	('Mars', 1.88, 1.03, True, 8), 
+	('Jupiter', 11.86, 0.41, True, 9), 
+	('Saturn', 29.45, 0.44, True, 4), 
+	('Uranus', 84.02, 0.72, True, 2), 
+	('Neptune', 164.79, 0.67, True, 1), 
+	('Ceres', 4.60, 0.38, False, 7), 
+	('Orcus', 247.50, NULL, True, 11), 
+	('Pluto', 247.90, 6.39, True, 11), 
+	('Haumea', 283.80, 0.16, True, 3), 
+	('Quaoar', 288.00, 0.37, True, 12), 
+	('Makemake', 306.20, 0.95, True, 6), 
+	('Gonggong', 552.50, 0.93, True, 1), 
+	('Eris', 559.00, 14.56, True, 9), 
+	('Sedna', 12059.00, 0.43, False, 8), 
+	('Salacia', 273.98, 0.25, True, 10), 
+	('Varda', 313.12, 0.23, True, 1);
+
+CREATE TABLE moon(
+	moon_id SERIAL PRIMARY KEY,
+	name VARCHAR(30) NOT NULL UNIQUE, 
+	year_discovered INT, 
+	diameter_in_km INT);
+
+
+alter table moon add COLUMN id_planet int not null REFERENCES planet(planet_id);
+
+INSERT INTO 
+	moon(name, year_discovered, diameter_in_km, id_planet)
+VALUES
+	('Moon', NULL, 3476, 3), 
+	('Phobos', 1877, 23, 4), 
+	('Deimos', 1877, 13, 4), 
+	('Io', 1610, 3630, 5), 
+	('Europa', 1610, 3138, 5), 
+	('Ganymede', 1610, 5262, 5), 
+	('Callisto', 1610, 4800, 5), 
+	('Amalthea', 1892, 200, 5), 
+	('Himalia', 1904, 170, 5), 
+	('Thebe', 1979, 90, 5), 
+	('Mimas', 1789, 394, 6), 
+	('Enceladus', 1789, 502, 6), 
+	('Tethys', 1684, 1048, 6);
+
+
